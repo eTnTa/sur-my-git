@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ステータス入力ページ</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f5f7fa;
+            padding: 20px;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .input-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            flex: 1;
+            font-weight: bold;
+        }
+        .input-group input[type="number"] {
+            flex: 1;
+            padding: 8px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            text-align: right;
+        }
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            font-size: 1.1em;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+        .reset-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 6px 12px;
+            font-size: 0.9em;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .reset-btn:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button class="reset-btn" onclick="resetStatus()">リセット</button>
+        <h1>ステータス入力</h1>
+        <div class="input-group">
+            <label for="onaka">おなか</label>
+            <input type="number" id="onaka" min="0" max="100" value="100">
+        </div>
+        <div class="input-group">
+            <label for="suibun">水分</label>
+            <input type="number" id="suibun" min="0" max="100" value="100">
+        </div>
+        <div class="input-group">
+            <label for="stamina">スタミナ</label>
+            <input type="number" id="stamina" min="0" max="10" value="10">
+        </div>
+        <div class="input-group">
+            <label for="seishin">精神</label>
+            <input type="number" id="seishin" min="0" max="20" value="20">
+        </div>
+        <div class="input-group">
+            <label for="taikyuu">耐久力</label>
+            <input type="number" id="taikyuu" min="0" max="10" value="10">
+        </div>
+        <div class="input-group">
+            <label for="vitc">ビタミンC</label>
+            <input type="number" id="vitc" min="0" max="100" value="100">
+        </div>
+        <div class="input-group">
+            <label for="vitb">ビタミンB</label>
+            <input type="number" id="vitb" min="0" max="100" value="100">
+        </div>
+
+        <button class="submit-btn" id="timeButton" onclick="advanceTime()">経過(朝)</button>
+    </div>
+
+    <script>
+        const timeStages = ["経過(朝)", "経過(昼1)", "経過(昼2)", "経過(晩1)", "経過(晩2)"];
+        let currentStage = 0;
+
+        function advanceTime() {
+            const onakaInput = document.getElementById('onaka');
+            const suibunInput = document.getElementById('suibun');
+            const vitcInput = document.getElementById('vitc');
+            const vitbInput = document.getElementById('vitb');
+
+            onakaInput.value = Math.max(0, onakaInput.value - 10);
+            suibunInput.value = Math.max(0, suibunInput.value - 10);
+
+            if (timeStages[currentStage] === "経過(晩2)") {
+                vitcInput.value = Math.max(0, vitcInput.value - 10);
+                vitbInput.value = Math.max(0, vitbInput.value - 10);
+            }
+
+            currentStage = (currentStage + 1) % timeStages.length;
+            document.getElementById('timeButton').textContent = timeStages[currentStage];
+        }
+
+        function resetStatus() {
+            document.getElementById('onaka').value = 100;
+            document.getElementById('suibun').value = 100;
+            document.getElementById('stamina').value = 10;
+            document.getElementById('seishin').value = 20;
+            document.getElementById('taikyuu').value = 10;
+            document.getElementById('vitc').value = 100;
+            document.getElementById('vitb').value = 100;
+
+            currentStage = 0;
+            document.getElementById('timeButton').textContent = timeStages[currentStage];
+        }
+    </script>
+</body>
+</html>
